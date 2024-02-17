@@ -6,6 +6,11 @@ namespace WebApps.Controllers
 {
     public class HomeController : Controller
     {
+        private MoviesContext _context;
+        public HomeController(MoviesContext dataGuy) 
+        {
+            _context = dataGuy;
+        }
         public IActionResult Index()
         {
             return View();
@@ -24,6 +29,9 @@ namespace WebApps.Controllers
         [HttpPost]
         public IActionResult FormPage(Movie submission)
         {
+            _context.Movies.Add(submission);
+            _context.SaveChanges();
+
             return View("Confirmation", submission);
         }
     }

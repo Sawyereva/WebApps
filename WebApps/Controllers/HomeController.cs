@@ -6,16 +6,33 @@ namespace WebApps.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private MoviesContext _context;
+        public HomeController(MoviesContext dataGuy) 
         {
-            _logger = logger;
+            _context = dataGuy;
         }
-
         public IActionResult Index()
         {
             return View();
+        }
+        public IActionResult GetToKnow()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult FormPage()
+        {
+            return View("FormPage");
+        }
+
+        [HttpPost]
+        public IActionResult FormPage(Movie submission)
+        {
+            _context.Movies.Add(submission);
+            _context.SaveChanges();
+
+            return View("Confirmation", submission);
         }
     }
 }
